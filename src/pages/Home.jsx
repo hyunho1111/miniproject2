@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import Zone from './menu/Zone';
+import Partner from './menu/Partner';
+import Maker from './menu/Maker';
+import Activity from './menu/Activity';
+import On from './On';
 
 const Home = () => {
     const [messages, setMessages] = useState([]);
@@ -88,108 +93,19 @@ const Home = () => {
             </header>
 
             {/* 지역 선택 창 */}
-            {!showChat && !showDistanceOptions && !showPartnerOptions && !showActivities && (
-                <div className='mt-4 w-full h-96 bg-gray-100 rounded-lg p-4'>
-                    <p className='text-center text-lg font-bold mb-4'>지역을 선택하세요</p>
-
-                    <div className='grid grid-cols-3 gap-4'>
-                        {/* 시 선택 */}
-                        <div className='flex flex-col items-center'>
-                            <label className='text-gray-700 mb-2'>시</label>
-                            <select
-                                value={selectedRegion.si}
-                                onChange={(e) => handleRegionChange('si', e.target.value)}
-                                className='border rounded-full px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400'
-                            >
-                                <option value="">선택하세요</option>
-                                <option value="서울">서울</option>
-                                <option value="부산">부산</option>
-                                <option value="대구">대구</option>
-                            </select>
-                        </div>
-
-                        {/* 구 선택 */}
-                        <div className='flex flex-col items-center'>
-                            <label className='text-gray-700 mb-2'>구</label>
-                            <select
-                                value={selectedRegion.gu}
-                                onChange={(e) => handleRegionChange('gu', e.target.value)}
-                                className='border rounded-full px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400'
-                            >
-                                <option value="">선택하세요</option>
-                                <option value="강남구">강남구</option>
-                                <option value="서초구">서초구</option>
-                                <option value="송파구">송파구</option>
-                            </select>
-                        </div>
-
-                        {/* 동 선택 */}
-                        <div className='flex flex-col items-center'>
-                            <label className='text-gray-700 mb-2'>동</label>
-                            <select
-                                value={selectedRegion.dong}
-                                onChange={(e) => handleRegionChange('dong', e.target.value)}
-                                className='border rounded-full px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400'
-                            >
-                                <option value="">선택하세요</option>
-                                <option value="신사동">신사동</option>
-                                <option value="압구정동">압구정동</option>
-                                <option value="잠실동">잠실동</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {!showChat && !showDistanceOptions && !showPartnerOptions && !showActivities && (<Zone selectedRegion={selectedRegion} handleRegionChange={handleRegionChange} />)}
 
             {/* 거리 선택 버튼 */}
-            {showDistanceOptions && (
-                <div className='mt-4 w-full h-96 bg-gray-100 rounded-lg p-4 grid grid-cols-4 gap-4'>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>5km</button>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>10km</button>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>Half</button>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>Full</button>
-                </div>
-            )}
+            {showDistanceOptions && (<Maker />)}
 
             {/* 파트너 버튼 UI */}
-            {showPartnerOptions && (
-                <div className='mt-4 w-full h-96 bg-gray-100 rounded-lg p-4 grid grid-cols-3 gap-4'>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>내 파트너</button>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>파트너 찾기</button>
-                    <button className='bg-yellow-400 rounded-lg p-2 shadow'>인가 파트너</button>
-                </div>
-            )}
+            {showPartnerOptions && (<Partner />)}
 
             {/* 내 활동 버튼 클릭 시 표시 */}
-            {showActivities && (
-                <div className='mt-4 w-full h-96 bg-gray-100 rounded-lg p-4 overflow-y-auto'>
-                    <h2 className='text-center text-lg font-bold mb-4'>내 활동 기록</h2>
-                    <div className='grid grid-cols-1 gap-4'>
-                        {activityRecords.map((record, idx) => (
-                            <div key={idx} className='bg-white p-4 rounded-lg shadow'>
-                                <p className='font-semibold'>{record.date} {record.activity}</p>
-                                <p>거리: {record.distance}</p>
-                                <p>시간: {record.time}</p>
-                                <p>페이스: {record.pace}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+            {showActivities && (<Activity activityRecords={activityRecords} />)}
 
             {/* 채팅방 내용 */}
-            {showChat && (
-                <div className='mt-4 w-full h-96 bg-gray-100 rounded-lg p-4 overflow-y-scroll'>
-                    {messages.length === 0 ? (
-                        <p className='text-gray-500 text-center'>채팅 메시지가 없습니다</p>
-                    ) : (
-                        messages.map((msg, idx) => (
-                            <div key={idx} className='mb-2'>
-                                <p className='bg-white p-2 rounded-lg shadow'>{msg}</p>
-                            </div>
-                        ))
-                    )}
-                </div>
+            {showChat && (<On messages={messages} />
             )}
 
             {/* 채팅 입력란 */}
