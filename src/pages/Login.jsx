@@ -1,18 +1,34 @@
 import React from 'react';
 import logo from './images/Runpartner.jpg';
 import { useNavigate } from 'react-router-dom';
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from '../firebase';
 
 const Login = () => {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
-    const handleGoogleLogin = () => {
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            console.log(user);
+        } catch (error) {
+            console.error(error.message);
+        }
         // 구글 로그인 로직을 여기에 추가
-        navigate('/home'); // 홈 화면으로 이동
+        navigate('/'); // 홈 화면으로 이동
     };
 
-    const handlePhoneLogin = () => {
+    const handlePhoneLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            console.log(user);
+        } catch (error) {
+            console.error(error.message);
+        }
         // 전화번호 로그인 로직을 여기에 추가
-        navigate('/home'); // 홈 화면으로 이동
+        navigate('/'); // 홈 화면으로 이동
     };
 
     return (

@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Zone from './menu/Zone';
 import Partner from './menu/Partner';
 import Maker from './menu/Maker';
 import Activity from './menu/Activity';
 import On from './On';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
+    const history = useNavigate()
+
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [showChat, setShowChat] = useState(true); // 채팅창 표시 여부
@@ -41,6 +46,9 @@ const Home = () => {
         { date: '09.25', activity: '풀 마라톤', distance: '42.195km', time: '4:00:00', pace: '5:41/km' }
     ];
 
+    useEffect(() => {
+        if (!auth.currentUser) { history("/login") }
+    }, [])
     return (
         <div className='
         max-w-[572px]
@@ -153,9 +161,22 @@ const Home = () => {
                 </button>
                 <button
                     className='logout py-2 bg-red-400 text-white rounded-full'
-                    onClick={() => {
+                    onClick={async () => {
                         // 로그아웃 처리 (여기에 로그아웃 로직 추가)
-                        alert('로그아웃 되었습니다.');
+                        const ok = window.confirm("정말 로그아웃 하시겠습니까?");
+
+                        if (!ok) return; // 아니요 선택시 다음 줄 실행안함
+
+                        // 1. 파이어베이스에게 로그아웃 요청
+                        try {
+                            // await signOut(auth)
+                            await auth.signOut();
+                        } catch (error) {
+                            console.error(error);
+                        }
+
+                        // 2. 로그인 화면으로 리다이렉트
+                        history("/login");
                     }}
                 >
                     로그아웃

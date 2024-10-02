@@ -8,8 +8,8 @@ const App = () => {
     <div className="w-screen h-screen bg-slate-300 flex items-center">
       <BrowserRouter>
         <Routes>
-          <Route path="/home" element={<Home />} />;
-          <Route path="/" element={<Login />} />;
+          <Route path="/" element={<Home />} />;
+          <Route path="/login" element={<Login />} />;
         </Routes>
       </BrowserRouter>
     </div>
